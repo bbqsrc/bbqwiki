@@ -1,0 +1,80 @@
+.bbq-container {
+	position: relative;
+	border: 1px solid black;
+	min-height: 100px;
+	padding: 1em;
+}
+
+.bbq-tabs {
+	position: absolute;
+	top: 0;
+	right: 0;
+	box-shadow: -2px 3px 2px .BBB;
+	-moz-box-shadow: -2px 3px 2px .BBB;
+	-webkit-box-shadow: -2px 3px 2px .BBB;
+}
+
+.bbq-tabs ul {
+	display: none;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 9pt;
+	background-color: white;
+	width: 4em;
+}
+
+.bbq-tabs ul.open {
+	display: block;
+}
+
+.bbq-tabs ul li, .bbq-handle {
+	cursor: pointer;
+	height: 1em;
+	width: 4em;
+	padding: 5px;
+	font-size: 9pt;
+	margin: 0;
+	border: 1px solid gray;
+	border-right: 0;
+	border-top: 0;
+	background-color: #EEEEEE;
+}
+
+.bbq-handle {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	width: 4em;
+	text-align: center;
+}
+
+.bbq-tabs ul li.bbq-selected, .bbq-tabs ul li:hover, .bbq-handle:hover {
+	background-color: white;
+}
+
+
+.bbq-tabs span {
+	vertical-align: baseline;
+}
+
+.bbq-handle.open span {
+	-moz-transform: rotate(180deg);
+}
+
+.bbq-window {
+	/*padding-left: 1em;*/
+}
+
+.bbq-window textarea {
+	font-family: "Mensch", "Menlo", "DejaVu Mono", monospace;
+	font-size: 12pt;
+	height: 24em;
+	width: 49em;
+	white-space: nowrap;
+	overflow: auto;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	-webkit-tab-size: 4;
+	tab-size: 4;
+}
+
