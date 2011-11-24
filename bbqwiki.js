@@ -71,7 +71,7 @@ bbqwiki.toggleTabs = function(container) {
 };
 
 bbqwiki.Wiki = (function() {
-	function Wiki(id, article) {
+	function Wiki(id, article, url) {
 		var self = this;
 		if (id == null || article == null) {
 			return null;
@@ -79,7 +79,7 @@ bbqwiki.Wiki = (function() {
 
 		self.id = id;
 		self.article = article;
-		//self.url = url;
+		self.url = url || "";
 		self.instance = ++bbqwiki.instanceCount;
 
 		self.container = null;
@@ -151,23 +151,28 @@ bbqwiki.Wiki = (function() {
 		}, false);
 	};
 	
+	Wiki.prototype.getEntry = function(self, obj) {
+		var xhr = new XMLHttpRequest(),
+			formData = new FormData();
+		
+		xhr.open("POST", self.url + "/get_entry");
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) { 
+				if (xhr.status == 200) {
+					obj.innerHTML = xhr.response;
+				} else {
+					alert(xhr.status);
+				}
+			}
+		};
+
+		formData.append("title", self.article);
+		xhr.send(formData);
+	};
+
 	Wiki.prototype.showPage = function(self) {
-		var fragment = document.createDocumentFragment(),
-			div, heading;
 		self.window.innerHTML = "";
-	
-		//STUB make call to server, get data
-		heading = document.createElement('h1');
-		heading.appendChild(document.createTextNode("Heading 1"));
-		fragment.appendChild(heading);
-		fragment.appendChild(document.createTextNode("This is stub-like."));
-
-		heading = document.createElement('h2');
-		heading.appendChild(document.createTextNode("Heading 2"));
-		fragment.appendChild(heading);
-		fragment.appendChild(document.createTextNode("Some more example text!"));
-
-		self.window.appendChild(fragment);
+		self.getEntry(self, self.window);
 	};
 
 	Wiki.prototype.showEdit = function(self) {
@@ -177,6 +182,7 @@ bbqwiki.Wiki = (function() {
 		self.window.innerHTML = "";
 		
 		textarea = document.createElement("textarea");
+		self.getEntry(self, textarea);
 		textarea.addEventListener('keydown', bbqwiki.allowTabs, false);
 		textarea.setAttribute("wrap", "off");
 		fragment.appendChild(textarea);
@@ -195,10 +201,12 @@ bbqwiki.Wiki = (function() {
 	Wiki.prototype.updateEntry = function(self) {
 		var xhr = new XMLHttpRequest(),
 			formData = new FormData();
-		xhr.open("POST", "/update");
+		xhr.open("POST", self.url + "/update");
 		xhr.onreadystatechange = function() {
-			if (xhr.readState == 4) { 
-				if (xhr.status != 200) {
+			if (xhr.readyState == 4) { 
+				if (xhr.status == 200) {
+					self.showPage(self);
+				} else {
 					alert(xhr.status);
 				}
 			}
